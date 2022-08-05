@@ -5,8 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CreateMultFiles"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Create Multiple Files with Subsitution version 0.01" Height="450" Width="800">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="85*"/>
+            <RowDefinition Height="60*"/>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="85*"/>
+            <RowDefinition Height="39*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="180*"/>
+            <ColumnDefinition Width="120*"/>
+            <ColumnDefinition Width="205*"/>
+            <ColumnDefinition Width="170*"/>
+            <ColumnDefinition Width="117*"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="New_Preset" Content="Create New Preset" Grid.Row="0" Grid.Column="5" Click="New_Preset_Click"/>
+
+
     </Grid>
 </Window>
