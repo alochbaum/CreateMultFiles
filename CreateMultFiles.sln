@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32630.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateMultFiles", "CreateMultFiles.csproj", "{02A5AB38-18F5-42ED-9C65-62DB7BBC66EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{02A5AB38-18F5-42ED-9C65-62DB7BBC66EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02A5AB38-18F5-42ED-9C65-62DB7BBC66EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02A5AB38-18F5-42ED-9C65-62DB7BBC66EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02A5AB38-18F5-42ED-9C65-62DB7BBC66EB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3D79DA98-0EAD-426B-967C-F77BF8A2F649}
+	EndGlobalSection
+EndGlobal
