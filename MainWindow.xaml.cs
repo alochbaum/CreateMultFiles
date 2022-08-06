@@ -32,16 +32,16 @@ namespace CreateMultFiles
             rtbStatus.AppendText("Program Started \r\n");
         }
 
-        private void New_Preset_Click(object sender, RoutedEventArgs e)
-        {
-            WinPreset PopWin = new WinPreset();
-            bool? boolPopWin = PopWin.ShowDialog();
-        }
-
         private void cbPresets_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             rtbReplace.Document.Blocks.Clear();
             rtbReplace.AppendText(CCMultSqlite.GetPresetReplace(cbPresets.SelectedItem.ToString()));
+        }
+
+        private void btNewPreset_Click(object sender, RoutedEventArgs e)
+        {
+            WinPreset PopWin = new WinPreset();
+            bool? boolPopWin = PopWin.ShowDialog();
         }
     }
 }
