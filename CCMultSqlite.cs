@@ -13,7 +13,6 @@ namespace CreateMultFiles
     {
         static public string DBFile()
         {
-            //return @"c:\iTX Software\FileAdj.db";
             // For the next line not to error you need to add System.Deployment reference
             if (ApplicationDeployment.IsNetworkDeployed)
             {
