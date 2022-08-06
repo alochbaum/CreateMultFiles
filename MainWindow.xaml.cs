@@ -45,25 +45,23 @@ namespace CreateMultFiles
         private void btExportDB_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "SQLite|*.sqlite|All Files|*.*";
             if (saveFileDialog.ShowDialog() == true)
             {
-                string strFile = saveFileDialog.FileName;
-                if (File.Exists(strFile))
-                {
-                    MessageBoxResult result = MessageBox.Show($"Overwrite {strFile}", "File Exists", MessageBoxButton.OKCancel);
-                    if (result == MessageBoxResult.Cancel) goto SkipCopy;
-                }
-                File.Copy(GetDbLocation(), strFile, true);
-            }
-        SkipCopy:;
+                File.Copy(GetDbLocation(), saveFileDialog.FileName, true);
+                rtbStatus.AppendText($"Exported DB to {saveFileDialog.FileName}\r\n");
+            } else { rtbStatus.AppendText("DB Export Cancelled"); }
         }
         private void btImportDB_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "SQLite|*.sqlite|All Files|*.*";
             if(openFileDialog.ShowDialog()==true)
             {
                 File.Copy(openFileDialog.FileName, GetDbLocation(), true);
+                rtbStatus.AppendText($"Imported Presets from: {openFileDialog.FileName}\r\n");
             }
+            else { rtbStatus.AppendText("DB Import Cancelled"); }
         }
         private void btNewPreset_Click(object sender, RoutedEventArgs e)
         {
