@@ -24,6 +24,7 @@ namespace CreateMultFiles
     /// </summary>
     public partial class MainWindow : Window
     {
+        private CPreset dPreset; 
         public MainWindow()
         {
             InitializeComponent();
@@ -38,7 +39,9 @@ namespace CreateMultFiles
         private void cbPresets_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             rtbReplace.Document.Blocks.Clear();
-            rtbReplace.AppendText(CCMultSqlite.GetPresetReplace(cbPresets.SelectedItem.ToString()));
+            dPreset = CCMultSqlite.GetDPreset(cbPresets.SelectedItem.ToString());
+            rtbReplace.AppendText(dPreset.Replace+"\r\n"); 
+            //rtbReplace.AppendText(cbPresets.SelectedItem.ToString() + "\r\n");
         }
 
  

@@ -91,6 +91,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CCMultSqlite.cs" />
+    <Compile Include="CPreset.cs" />
     <Compile Include="WinPreset.xaml.cs">
       <DependentUpon>WinPreset.xaml</DependentUpon>
     </Compile>

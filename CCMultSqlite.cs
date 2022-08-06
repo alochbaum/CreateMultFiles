@@ -39,29 +39,31 @@ namespace CreateMultFiles
             }
             return mList;
         }
-        static public String GetPresetReplace(String strTitle)
+        static public CPreset GetDPreset(String strTitle)
         {
-            String strReturn = "#^blank# error getting data";
+            CPreset returnPreset = new CPreset();
             SQLiteConnection m_dbConnection = new SQLiteConnection();
             string strDBFile = DBFile();
             if (File.Exists(strDBFile))
             {
                 m_dbConnection.ConnectionString = "Data Source=" + strDBFile + ";Version=3;";
                 m_dbConnection.Open();
-                string sql = "Select PresetReplace from Preset where PresetTitle ='"
-                                + strTitle + "' order by PresetTitle limit 1;";
+                string sql = "select PresetTitle,PresetTop,PresetMiddle,PresetBottom,PresetReplace from Preset where PresetTitle ='"
+                                + strTitle + "'order by PresetTitle limit 1;";
                 SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
                 SQLiteDataReader reader = command.ExecuteReader();
-                if (reader.HasRows)
+                while (reader.Read())
                 {
-                    while (reader.Read())
-                        strReturn = reader.GetString(0);
+                    returnPreset.Title = reader.GetString(0);
+                    returnPreset.Top = reader.GetString(1);
+                    returnPreset.Middle = reader.GetString(2);
+                    returnPreset.Bottom = reader.GetString(3);
+                    returnPreset.Replace = reader.GetString(4);
                 }
-
-                reader.Close();
+                    reader.Close();
                 m_dbConnection.Close();
             }
-            return strReturn;
+            return returnPreset;
         }
     }
 }
