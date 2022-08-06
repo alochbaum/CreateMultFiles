@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,11 +24,24 @@ namespace CreateMultFiles
         public MainWindow()
         {
             InitializeComponent();
+            // Adding the version number to the title
+            MainWdw.Title = "Create Multiple Files with Subsitution version " + Assembly.GetExecutingAssembly().GetName().Version;
+            List<string> lsPresetTitles = CCMultSqlite.GetPresetTitles();
+            cbPresets.ItemsSource = lsPresetTitles;
+            cbPresets.SelectedIndex = 0;
+            rtbStatus.AppendText("Program Started \r\n");
         }
 
         private void New_Preset_Click(object sender, RoutedEventArgs e)
         {
+            WinPreset PopWin = new WinPreset();
+            bool? boolPopWin = PopWin.ShowDialog();
+        }
 
+        private void cbPresets_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            rtbReplace.Document.Blocks.Clear();
+            rtbReplace.AppendText(CCMultSqlite.GetPresetReplace(cbPresets.SelectedItem.ToString()));
         }
     }
 }

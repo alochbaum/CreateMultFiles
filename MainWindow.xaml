@@ -1,19 +1,17 @@
-﻿<Window x:Class="CreateMultFiles.MainWindow"
+﻿<Window x:Name="MainWdw" x:Class="CreateMultFiles.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CreateMultFiles"
         mc:Ignorable="d"
-        Title="Create Multiple Files with Subsitution version 0.01" Height="450" Width="800">
+        Title="wdw" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="85*"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="60*"/>
-            <RowDefinition Height="50*"/>
-            <RowDefinition Height="85*"/>
-            <RowDefinition Height="39*"/>
+            <RowDefinition Height="30*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="180*"/>
@@ -22,8 +20,22 @@
             <ColumnDefinition Width="170*"/>
             <ColumnDefinition Width="117*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="New_Preset" Content="Create New Preset" Grid.Row="0" Grid.Column="5" Click="New_Preset_Click"/>
-
+        <Button x:Name="New_Preset" Content="Create New Preset" Grid.Row="0" Grid.Column="4" Click="New_Preset_Click"/>
+        <ComboBox x:Name="cbPresets" Grid.Row="0" Grid.Column="2" SelectionChanged="cbPresets_SelectionChanged"></ComboBox>
+        <RichTextBox x:Name="rtbReplace" Grid.Row="2" Grid.ColumnSpan="5">
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </RichTextBox.Resources>
+        </RichTextBox>
+        <RichTextBox x:Name="rtbStatus" Grid.Row="3" Grid.ColumnSpan="5">
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </RichTextBox.Resources>
+        </RichTextBox>
 
     </Grid>
 </Window>
