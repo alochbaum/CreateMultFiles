@@ -65,5 +65,28 @@ namespace CreateMultFiles
             }
             return returnPreset;
         }
+        static public bool PutDPreset(CPreset pPreset)
+        {
+            bool blreturn = false;
+            SQLiteConnection m_dbConnection = new SQLiteConnection();
+            string strDBFile = DBFile();
+            if (File.Exists(strDBFile))
+            {
+                m_dbConnection.ConnectionString = "Data Source=" + strDBFile + ";Version=3;";
+                m_dbConnection.Open();
+                string sql = "INSERT INTO Preset(\"PresetTitle\",\"PresetTop\",\"PresetMiddle\",\"PresetBottom\",\"PresetReplace\")"
+                    + "VALUES (@Title,@Top,@Middle,@Bottom,@Replace);";
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                // protected from single quotes in the passed strings
+                command.Parameters.Add(new SQLiteParameter("Title", pPreset.Title));
+                command.Parameters.Add(new SQLiteParameter("Top", pPreset.Top));
+                command.Parameters.Add(new SQLiteParameter("Middle", pPreset.Top));
+                command.Parameters.Add(new SQLiteParameter("Bottom", pPreset.Top));
+                command.Parameters.Add(new SQLiteParameter("Replace", pPreset.Top));
+                int rows = command.ExecuteNonQuery();
+                if (rows == 1) blreturn = true;
+            }
+            return blreturn;
+        }
     }
 }

@@ -41,7 +41,7 @@ namespace CreateMultFiles
             rtbReplace.Document.Blocks.Clear();
             dPreset = CCMultSqlite.GetDPreset(cbPresets.SelectedItem.ToString());
             rtbReplace.AppendText(dPreset.Replace+"\r\n"); 
-            //rtbReplace.AppendText(cbPresets.SelectedItem.ToString() + "\r\n");
+            rtbStatus.AppendText(cbPresets.SelectedItem.ToString() + "\r\n");
         }
 
  
@@ -68,8 +68,16 @@ namespace CreateMultFiles
         }
         private void btNewPreset_Click(object sender, RoutedEventArgs e)
         {
-            WinPreset PopWin = new WinPreset();
-            bool? boolPopWin = PopWin.ShowDialog();
+            string strTitle = cbPresets.SelectedItem.ToString();
+            if (strTitle == "A Welcome Preset") MessageBox.Show("You can't create from 'A Welcome Preset' select another", "Please select another preset");
+            else
+            {
+                WinPreset PopWinC = new WinPreset(strTitle);
+                PopWinC.strMode = "Create";
+                //PopWin.LoadData(cbPresets.SelectedItem.ToString());
+                //PopWin.myPreset = dPreset;
+                bool? boolPopWin = PopWinC.ShowDialog();
+            }
         }
 
         private string GetDbLocation()
@@ -81,7 +89,12 @@ namespace CreateMultFiles
             return @"C:\Users\AndyL\source\repos\CreateMultFiles\CreateMult.sqlite";
         }
 
-
-
+        private void btView_Click(object sender, RoutedEventArgs e)
+        {
+                WinPreset PopWin = new WinPreset(cbPresets.SelectedItem.ToString());
+                //PopWin.LoadData(cbPresets.SelectedItem.ToString());
+                //PopWin.myPreset = dPreset;
+                bool? boolPopWin = PopWin.ShowDialog();
+        }
     }
 }

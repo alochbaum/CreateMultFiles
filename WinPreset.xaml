@@ -6,7 +6,37 @@
         xmlns:local="clr-namespace:CreateMultFiles"
         mc:Ignorable="d"
         Title="Preset Values" Height="450" Width="800">
+
     <Grid>
-        
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="60*"/>
+            <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="8*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="354*"/>
+            <RowDefinition Height="30*"/>
+        </Grid.RowDefinitions>
+        <Label Content="Name:" Grid.Row="0" Grid.Column="0"/>
+        <TextBox x:Name="tbTitle" Grid.Row="0" Grid.Column="1"/>
+        <TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4">
+            <TabItem Header="Top" MinWidth="130">
+                <RichTextBox x:Name="rtbTop"/>
+            </TabItem>
+            <TabItem Header="Middle" MinWidth="130">
+                <RichTextBox x:Name="rtbMiddle"/>
+            </TabItem>
+            <TabItem Header="Bottom" MinWidth="130">
+                <RichTextBox x:Name="rtbBottom"/>
+            </TabItem>
+            <TabItem Header="Replacement Data from Spreadsheet">
+                <RichTextBox x:Name="rtbReplace"/>
+            </TabItem>
+        </TabControl>
+        <Button x:Name="btAccept" Grid.Row="4" Grid.Column="2" Content="Accept" Click="btAccept_Click"/>
+        <Button x:Name="btCancel" Grid.Row="4" Grid.Column="3" Content="Cancel" IsCancel="True"/>
     </Grid>
 </Window>

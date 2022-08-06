@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:CreateMultFiles"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style TargetType="Paragraph">
+            <Setter Property="Margin" Value="0"/>
+        </Style>
     </Application.Resources>
 </Application>

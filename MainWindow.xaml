@@ -20,27 +20,15 @@
             <ColumnDefinition Width="150*"/>
             <ColumnDefinition Width="150*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="btProcess" Content="Process Replacements" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" />
+        <Button x:Name="btProcess" Content="Process Pieces" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" FontSize="18" />
         <Button x:Name="btNewPreset" Content="Create New Preset" Grid.Row="0" Grid.Column="4" Click="btNewPreset_Click"/>
         <Button x:Name="btDelete" Content="Delete Current Preset" Grid.Row="1" Grid.Column="4" />
-        <Button x:Name="btKeepChanges" Content="Save Preset Changes" Grid.Row="0" Grid.Column="3"/>
+        <Button x:Name="btView" Content="View Output Pieces" Grid.Row="0" Grid.Column="3" Click="btView_Click"/>
+        <Button x:Name="btKeepChanges" Content="Save Preset Changes" Grid.Row="1" Grid.Column="3"/>
         <Button x:Name="btImportDB" Grid.Row="0" Grid.Column="1" Content="Import Preset DB" Click="btImportDB_Click" />
         <Button x:Name="btExportDB" Grid.Row="1" Grid.Column="1" Content="Export Preset DB" Click="btExportDB_Click" />
         <ComboBox x:Name="cbPresets" Grid.Row="0" Grid.Column="2" SelectionChanged="cbPresets_SelectionChanged"></ComboBox>
-        <RichTextBox x:Name="rtbReplace" Grid.Row="2" Grid.ColumnSpan="5">
-            <RichTextBox.Resources>
-                <Style TargetType="{x:Type Paragraph}">
-                    <Setter Property="Margin" Value="0"/>
-                </Style>
-            </RichTextBox.Resources>
-        </RichTextBox>
-        <RichTextBox x:Name="rtbStatus" Grid.Row="3" Grid.ColumnSpan="5">
-            <RichTextBox.Resources>
-                <Style TargetType="{x:Type Paragraph}">
-                    <Setter Property="Margin" Value="0"/>
-                </Style>
-            </RichTextBox.Resources>
-        </RichTextBox>
-
+        <RichTextBox x:Name="rtbReplace" Grid.Row="2" Grid.ColumnSpan="5"/>
+        <RichTextBox x:Name="rtbStatus" Grid.Row="3" Grid.ColumnSpan="5"/>
     </Grid>
 </Window>
