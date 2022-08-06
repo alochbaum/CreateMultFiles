@@ -30,9 +30,7 @@ namespace CreateMultFiles
             InitializeComponent();
             // Adding the version number to the title
             MainWdw.Title = "Create Multiple Files with Subsitution version " + Assembly.GetExecutingAssembly().GetName().Version;
-            List<string> lsPresetTitles = CCMultSqlite.GetPresetTitles();
-            cbPresets.ItemsSource = lsPresetTitles;
-            cbPresets.SelectedIndex = 0;
+            UpdatePresetList();
             rtbStatus.AppendText("Program Started \r\n");
         }
 
@@ -52,7 +50,7 @@ namespace CreateMultFiles
             if (saveFileDialog.ShowDialog() == true)
             {
                 File.Copy(GetDbLocation(), saveFileDialog.FileName, true);
-                rtbStatus.AppendText($"Exported DB to {saveFileDialog.FileName}\r\n");
+                rtbStatus.AppendText($"Exported DB to: {saveFileDialog.FileName}\r\n");
             } else { rtbStatus.AppendText("DB Export Cancelled"); }
         }
         private void btImportDB_Click(object sender, RoutedEventArgs e)
@@ -72,11 +70,12 @@ namespace CreateMultFiles
             if (strTitle == "A Welcome Preset") MessageBox.Show("You can't create from 'A Welcome Preset' select another", "Please select another preset");
             else
             {
-                WinPreset PopWinC = new WinPreset(strTitle);
-                PopWinC.strMode = "Create";
-                //PopWin.LoadData(cbPresets.SelectedItem.ToString());
-                //PopWin.myPreset = dPreset;
+                WinPreset PopWinC = new WinPreset(strTitle,"Create");
                 bool? boolPopWin = PopWinC.ShowDialog();
+                if (boolPopWin==true) {
+                    rtbStatus.AppendText("Created new preset, second step is to select it and click Update Replace.\r\n");
+                    UpdatePresetList();
+                }
             }
         }
 
@@ -91,10 +90,40 @@ namespace CreateMultFiles
 
         private void btView_Click(object sender, RoutedEventArgs e)
         {
-                WinPreset PopWin = new WinPreset(cbPresets.SelectedItem.ToString());
-                //PopWin.LoadData(cbPresets.SelectedItem.ToString());
-                //PopWin.myPreset = dPreset;
-                bool? boolPopWin = PopWin.ShowDialog();
+            WinPreset PopWin = new WinPreset(cbPresets.SelectedItem.ToString(),"End View");
+            bool? boolPopWin = PopWin.ShowDialog();
+        }
+
+        private void UpdatePresetList()
+        {
+            cbPresets.SelectedIndex = 0;
+            List<string> lsPresetTitles = CCMultSqlite.GetPresetTitles();
+            cbPresets.ItemsSource = lsPresetTitles;
+        }
+
+        private void btDelete_Click(object sender, RoutedEventArgs e)
+        {
+            string strTitle = cbPresets.SelectedItem.ToString();
+            if (strTitle == "A Welcome Preset") MessageBox.Show("You can't delete from 'A Welcome Preset' select another", "Please select another preset");
+            else if (strTitle == "empty") MessageBox.Show("You can't delete from 'empty' select another", "Please select another preset");
+            else
+            {
+                MessageBoxResult mbResult = MessageBox.Show($"Go ahead and delete {strTitle}", "Are you sure", MessageBoxButton.OKCancel);
+                if (mbResult == MessageBoxResult.OK) {
+                    bool bResult = CCMultSqlite.DeleteDPreset(strTitle);
+                    if (bResult) rtbStatus.AppendText($"Deleted Preset: {strTitle}");
+                    UpdatePresetList();
+                }
+            }
+        }
+
+        private void btUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            string strTitle = cbPresets.SelectedItem.ToString();
+            TextRange textRange = new TextRange(rtbReplace.Document.ContentStart, rtbReplace.Document.ContentEnd);
+            string strReplace= textRange.Text;
+            bool bResult = CCMultSqlite.UpdateDPreset(strTitle, strReplace);
+            if (bResult) rtbStatus.AppendText($"Updated Preset: {strTitle} with the shown replace file.");
         }
     }
 }

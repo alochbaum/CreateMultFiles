@@ -7,5 +7,9 @@
         <Style TargetType="Paragraph">
             <Setter Property="Margin" Value="0"/>
         </Style>
+        <Style TargetType="RichTextBox">
+            <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        </Style>
     </Application.Resources>
 </Application>

@@ -21,26 +21,27 @@ namespace CreateMultFiles
     public partial class WinPreset : Window
     {
         public string strMode { get; set; } = "OK";
-        public WinPreset(string inString)
+        public WinPreset(string inString, string Mode)
         {
             InitializeComponent();
+            strMode = Mode;
+            btAccept.Content = strMode;
             CPreset myPreset = CCMultSqlite.GetDPreset(inString);
             tbTitle.Text = myPreset.Title;
             rtbTop.AppendText(myPreset.Top);
             rtbMiddle.AppendText(myPreset.Middle);
             rtbBottom.AppendText(myPreset.Bottom);
             rtbReplace.AppendText(myPreset.Replace);
-            btAccept.Content = strMode;
         }
-        
 
         private void btAccept_Click(object sender, RoutedEventArgs e)
         {
+            bool bResult = true;
             if (strMode == "Create")
             {
-                
+                bResult=CCMultSqlite.PutDPreset(Serialize());
             }
-            this.DialogResult = true;
+            this.DialogResult = bResult;
         }
         private CPreset Serialize()
         {

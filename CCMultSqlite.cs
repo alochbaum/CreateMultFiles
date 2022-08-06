@@ -88,5 +88,39 @@ namespace CreateMultFiles
             }
             return blreturn;
         }
+        static public bool DeleteDPreset(string strTitle)
+        {
+            bool blreturn = false;
+            SQLiteConnection m_dbConnection = new SQLiteConnection();
+            string strDBFile = DBFile();
+            if (File.Exists(strDBFile))
+            {
+                m_dbConnection.ConnectionString = "Data Source=" + strDBFile + ";Version=3;";
+                m_dbConnection.Open();
+                string sql = "DELETE FROM Preset WHERE PresetTitle='" + strTitle + "';";
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                int rows = command.ExecuteNonQuery();
+                if (rows == 1) blreturn = true;
+            }
+            return blreturn;
+        }
+        static public bool UpdateDPreset(string strTitle,string strReplace)
+        {
+            bool blreturn = false;
+            SQLiteConnection m_dbConnection = new SQLiteConnection();
+            string strDBFile = DBFile();
+            if (File.Exists(strDBFile))
+            {
+                m_dbConnection.ConnectionString = "Data Source=" + strDBFile + ";Version=3;";
+                m_dbConnection.Open();
+                string sql = "UPDATE Preset SET PresetReplace=@Replace WHERE PresetTitle=@Title";
+                SQLiteCommand command = new SQLiteCommand(sql, m_dbConnection);
+                command.Parameters.Add(new SQLiteParameter("Title", strTitle));
+                command.Parameters.Add(new SQLiteParameter("Replace", strReplace));
+                int rows = command.ExecuteNonQuery();
+                if (rows == 1) blreturn = true;
+            }
+            return blreturn;
+        }
     }
 }
