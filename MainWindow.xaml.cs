@@ -121,7 +121,7 @@ namespace CreateMultFiles
         {
             string strTitle = cbPresets.SelectedItem.ToString();
             bool bResult = CCMultSqlite.UpdateDPreset(strTitle, ConvertReplaceTB());
-            if (bResult) rtbStatus.AppendText($"Updated Preset: {strTitle} with the shown replace file.");
+            if (bResult) rtbStatus.AppendText($"Updated Preset: {strTitle} with the shown replace data.\r\n");
         }
 
         private string ConvertReplaceTB()
@@ -148,7 +148,7 @@ namespace CreateMultFiles
                     line = reader.ReadLine();
                     if (line != null)
                     {
-                        if (!line.StartsWith("#^Comment")) lRows.Add(line);
+                        if (!line.StartsWith("#^comment")) lRows.Add(line);
                     }
 
                 } while (line != null);
@@ -157,8 +157,26 @@ namespace CreateMultFiles
             // Skipping if empty
             Int64 iCount = lRows.Count;
 
+            if (iCount < 1)
+            {
+                rtbStatus.AppendText($"No Action: Program didn't find any action lines in the replace field \r\n");
+                return;
+            }
             rtbStatus.AppendText($"Row Count of Replace {iCount}\r\n");
 
+            bool blIsOutputing = false;
+            // looping for output files
+            foreach (string row in lRows)
+            {
+                if (row.StartsWith("#^file#"))
+                {
+                    if (!blIsOutputing)
+                    {
+                        string[] rArray = row.Split('|');
+                        rtbStatus.AppendText($"Starting Recording {rArray[1]}\r\n");
+                    }
+                }
+            }
         }
     }
 }
