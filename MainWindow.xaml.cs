@@ -132,8 +132,8 @@ namespace CreateMultFiles
 
         private void btProcess_Click(object sender, RoutedEventArgs e)
         {
-            string strOutput;
-            strOutput = string.Empty;
+            string strOutput,strFileOut;
+            strOutput = strFileOut = string.Empty;
             List<string> lRows = new List<string>();
             
             // adding in top if no blank
@@ -157,11 +157,12 @@ namespace CreateMultFiles
             // Skipping if empty
             Int64 iCount = lRows.Count;
 
-            if (iCount < 1)
+            if ((iCount < 1)||(lRows[0].StartsWith("#^blank")))
             {
                 rtbStatus.AppendText($"No Action: Program didn't find any action lines in the replace field \r\n");
                 return;
             }
+  
             rtbStatus.AppendText($"Row Count of Replace {iCount}\r\n");
 
             bool blIsOutputing = false;
@@ -174,8 +175,45 @@ namespace CreateMultFiles
                     {
                         string[] rArray = row.Split('|');
                         rtbStatus.AppendText($"Starting Recording {rArray[1]}\r\n");
+                        strFileOut = rArray[1];
+                        blIsOutputing = true;
+                    } else
+                    {
+                        closeOut(strFileOut, strOutput);
+                        if (!dPreset.Top.StartsWith("#^blank#")) strOutput = dPreset.Top;
+                        else strOutput = String.Empty;
+                        blIsOutputing = false;
+
                     }
+                } else
+                {
+                    string[] rArray = row.Split('|');
+                    string strMiddle = dPreset.Middle;
+                    string strField = string.Empty;
+                    int iReplace = 1;
+                    foreach(string s in rArray)
+                    {
+                        if (s.Length > 0)
+                        {
+                            strField = $"#^field{iReplace:D2}#";
+                            strMiddle.Replace(strField, s);
+                        }
+                    }
+                    strOutput += strMiddle;
                 }
+            }
+        }
+        private void closeOut(string strFileOut,string strOutput)
+        {
+            if (!dPreset.Bottom.StartsWith("#^blank#")) strOutput += dPreset.Bottom;
+            try
+            {
+                File.WriteAllText(strFileOut, strOutput);
+                rtbStatus.AppendText($"Wrote out: {strFileOut}\r\n");
+            }
+            catch (Exception e)
+            {
+                rtbStatus.AppendText($"Failed writing: {strFileOut} {e.Message}\r\n");
             }
         }
     }

@@ -80,9 +80,9 @@ namespace CreateMultFiles
                 // protected from single quotes in the passed strings
                 command.Parameters.Add(new SQLiteParameter("Title", pPreset.Title));
                 command.Parameters.Add(new SQLiteParameter("Top", pPreset.Top));
-                command.Parameters.Add(new SQLiteParameter("Middle", pPreset.Top));
-                command.Parameters.Add(new SQLiteParameter("Bottom", pPreset.Top));
-                command.Parameters.Add(new SQLiteParameter("Replace", pPreset.Top));
+                command.Parameters.Add(new SQLiteParameter("Middle", pPreset.Middle));
+                command.Parameters.Add(new SQLiteParameter("Bottom", pPreset.Bottom));
+                command.Parameters.Add(new SQLiteParameter("Replace", pPreset.Replace));
                 int rows = command.ExecuteNonQuery();
                 if (rows == 1) blreturn = true;
             }
