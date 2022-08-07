@@ -108,10 +108,10 @@ namespace CreateMultFiles
             else if (strTitle == "empty") MessageBox.Show("You can't delete from 'empty' select another", "Please select another preset");
             else
             {
-                MessageBoxResult mbResult = MessageBox.Show($"Go ahead and delete {strTitle}", "Are you sure", MessageBoxButton.OKCancel);
+                MessageBoxResult mbResult = MessageBox.Show($"Go ahead and delete: {strTitle}", "Are you sure", MessageBoxButton.OKCancel);
                 if (mbResult == MessageBoxResult.OK) {
                     bool bResult = CCMultSqlite.DeleteDPreset(strTitle);
-                    if (bResult) rtbStatus.AppendText($"Deleted Preset: {strTitle}");
+                    if (bResult) rtbStatus.AppendText($"Deleted Preset: {strTitle}\r\n");
                     UpdatePresetList();
                 }
             }
@@ -146,7 +146,7 @@ namespace CreateMultFiles
                 do
                 {
                     line = reader.ReadLine();
-                    if (line != null)
+                    if ((line != null)&&(line.Length>0))
                     {
                         if (!line.StartsWith("#^comment")) lRows.Add(line);
                     }
@@ -171,37 +171,42 @@ namespace CreateMultFiles
             {
                 if (row.StartsWith("#^file#"))
                 {
+                    string[] rArray = row.Split('|');
                     if (!blIsOutputing)
                     {
-                        string[] rArray = row.Split('|');
-                        rtbStatus.AppendText($"Starting Recording {rArray[1]}\r\n");
                         strFileOut = rArray[1];
+                        rtbStatus.AppendText($"Starting Recording {rArray[1]}\r\n");
                         blIsOutputing = true;
                     } else
                     {
                         closeOut(strFileOut, strOutput);
+                        strFileOut = rArray[1];
                         if (!dPreset.Top.StartsWith("#^blank#")) strOutput = dPreset.Top;
                         else strOutput = String.Empty;
-                        blIsOutputing = false;
-
                     }
                 } else
                 {
-                    string[] rArray = row.Split('|');
-                    string strMiddle = dPreset.Middle;
-                    string strField = string.Empty;
-                    int iReplace = 1;
-                    foreach(string s in rArray)
+                    if (row.Length > 0)
                     {
-                        if (s.Length > 0)
+                        string[] rArray = row.Split('|');
+
+                        string strMiddle = dPreset.Middle;
+                        string strField = string.Empty;
+                        int iReplace = 1;
+                        foreach (string s in rArray)
                         {
-                            strField = $"#^field{iReplace:D2}#";
-                            strMiddle.Replace(strField, s);
+                            if (s.Length > 0)
+                            {
+                                strField = $"#^field{iReplace:D2}#";
+                                strMiddle = strMiddle.Replace(strField, s);
+                            }
+                            iReplace++;
                         }
+                        strOutput += strMiddle;
                     }
-                    strOutput += strMiddle;
                 }
             }
+            if(blIsOutputing) closeOut(strFileOut, strOutput);
         }
         private void closeOut(string strFileOut,string strOutput)
         {
