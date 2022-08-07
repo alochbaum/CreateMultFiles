@@ -20,7 +20,7 @@
             <ColumnDefinition Width="150*"/>
             <ColumnDefinition Width="150*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="btProcess" Content="Process Pieces" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" FontSize="18" />
+        <Button x:Name="btProcess" Content="Process Pieces" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" FontSize="18" Click="btProcess_Click" />
         <Button x:Name="btNewPreset" Content="Create New Preset" Grid.Row="0" Grid.Column="4" Click="btNewPreset_Click"/>
         <Button x:Name="btDelete" Content="Delete Current Preset" Grid.Row="1" Grid.Column="4" Click="btDelete_Click" />
         <Button x:Name="btView" Content="View Output Pieces" Grid.Row="0" Grid.Column="3" Click="btView_Click"/>

@@ -120,10 +120,45 @@ namespace CreateMultFiles
         private void btUpdate_Click(object sender, RoutedEventArgs e)
         {
             string strTitle = cbPresets.SelectedItem.ToString();
-            TextRange textRange = new TextRange(rtbReplace.Document.ContentStart, rtbReplace.Document.ContentEnd);
-            string strReplace= textRange.Text;
-            bool bResult = CCMultSqlite.UpdateDPreset(strTitle, strReplace);
+            bool bResult = CCMultSqlite.UpdateDPreset(strTitle, ConvertReplaceTB());
             if (bResult) rtbStatus.AppendText($"Updated Preset: {strTitle} with the shown replace file.");
+        }
+
+        private string ConvertReplaceTB()
+        {
+            TextRange textRange = new TextRange(rtbReplace.Document.ContentStart, rtbReplace.Document.ContentEnd);
+            return textRange.Text;
+        }
+
+        private void btProcess_Click(object sender, RoutedEventArgs e)
+        {
+            string strOutput;
+            strOutput = string.Empty;
+            List<string> lRows = new List<string>();
+            
+            // adding in top if no blank
+            if (!dPreset.Top.StartsWith("#^Blank#")) strOutput += dPreset.Top;;
+            
+            // Converting rtbReplace in to list of strings dropping comment rows
+            using (StringReader reader = new StringReader(ConvertReplaceTB()))
+            {
+                string line = string.Empty;
+                do
+                {
+                    line = reader.ReadLine();
+                    if (line != null)
+                    {
+                        if (!line.StartsWith("#^Comment")) lRows.Add(line);
+                    }
+
+                } while (line != null);
+            }
+
+            // Skipping if empty
+            Int64 iCount = lRows.Count;
+
+            rtbStatus.AppendText($"Row Count of Replace {iCount}\r\n");
+
         }
     }
 }
