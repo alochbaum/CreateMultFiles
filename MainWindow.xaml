@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CreateMultFiles"
         mc:Ignorable="d"
-        Title="wdw" Height="450" Width="800">
+        Title="wdw" Height="450" Width="800" Icon="3pieces.PNG.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
