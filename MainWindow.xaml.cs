@@ -96,9 +96,17 @@ namespace CreateMultFiles
 
         private void UpdatePresetList()
         {
-            cbPresets.SelectedIndex = 0;
-            List<string> lsPresetTitles = CCMultSqlite.GetPresetTitles();
-            cbPresets.ItemsSource = lsPresetTitles;
+            try
+            {
+                cbPresets.SelectedIndex = 0;
+                List<string> lsPresetTitles = CCMultSqlite.GetPresetTitles();
+                cbPresets.ItemsSource = lsPresetTitles;
+            }
+            catch (Exception ex)
+            {
+                rtbStatus.AppendText($"Error loading presets {ex.Message}\r\n");
+            }
+
         }
 
         private void btDelete_Click(object sender, RoutedEventArgs e)
@@ -192,7 +200,8 @@ namespace CreateMultFiles
 
                         string strMiddle = dPreset.Middle;
                         string strField = string.Empty;
-                        int iReplace = 1;
+                        // Changed this for first field to be zero
+                        int iReplace = 0;
                         foreach (string s in rArray)
                         {
                             if (s.Length > 0)

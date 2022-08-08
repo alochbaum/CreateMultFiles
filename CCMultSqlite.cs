@@ -13,10 +13,15 @@ namespace CreateMultFiles
     {
         static public string DBFile()
         {
+
             // For the next line not to error you need to add System.Deployment reference
             if (ApplicationDeployment.IsNetworkDeployed)
             {
-                return ApplicationDeployment.CurrentDeployment.DataDirectory + @"\CreateMult.sqlite";
+                string strFileLocation = "";
+                strFileLocation = ApplicationDeployment.CurrentDeployment.DataDirectory + @"\CreateMult.sqlite";
+                if (File.Exists(strFileLocation)) return strFileLocation;
+                strFileLocation = @"C:\test\CreateMult.sqlite";
+                return strFileLocation;
             }
             return @"C:\Users\AndyL\source\repos\CreateMultFiles\CreateMult.sqlite";
         }
