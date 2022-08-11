@@ -145,22 +145,30 @@ namespace CreateMultFiles
             List<string> lRows = new List<string>();
             
             // adding in top if no blank
-            if (!dPreset.Top.StartsWith("#^Blank#")) strOutput += dPreset.Top;;
-            
-            // Converting rtbReplace in to list of strings dropping comment rows
-            using (StringReader reader = new StringReader(ConvertReplaceTB()))
-            {
-                string line = string.Empty;
-                do
-                {
-                    line = reader.ReadLine();
-                    if ((line != null)&&(line.Length>0))
-                    {
-                        if (!line.StartsWith("#^comment")) lRows.Add(line);
-                    }
+            if (!dPreset.Top.StartsWith("#^Blank#")) strOutput += dPreset.Top;
 
-                } while (line != null);
+            try
+            {
+                // Converting rtbReplace in to list of strings dropping comment rows
+                using (StringReader reader = new StringReader(ConvertReplaceTB()))
+                {
+                    string line = string.Empty;
+                    do
+                    {
+                        line = reader.ReadLine();
+                        if ((line != null) && (line.Length > 0))
+                        {
+                            if (!line.StartsWith("#^comment")) lRows.Add(line);
+                        }
+
+                    } while (line != null);
+                }
             }
+            catch (Exception exr)
+            {
+                rtbStatus.AppendText($"Error parsing raw textbox lines in to list of strings {exr.Message}\r\n");
+            }
+
 
             // Skipping if empty
             Int64 iCount = lRows.Count;
@@ -179,18 +187,26 @@ namespace CreateMultFiles
             {
                 if (row.StartsWith("#^file#"))
                 {
-                    string[] rArray = row.Split('|');
-                    if (!blIsOutputing)
+                    // the separation character for file array might not be a | just cutting after 8 characters
+                    string fileLoc = row.Substring(8);
+                    if (Directory.Exists(System.IO.Path.GetDirectoryName(fileLoc)))
                     {
-                        strFileOut = rArray[1];
-                        rtbStatus.AppendText($"Starting Recording {rArray[1]}\r\n");
-                        blIsOutputing = true;
+                        if (!blIsOutputing)
+                        {
+                            strFileOut = fileLoc;
+                            rtbStatus.AppendText($"Starting Recording {fileLoc}\r\n");
+                            blIsOutputing = true;
+                        }
+                        else
+                        {
+                            closeOut(strFileOut, strOutput);
+                            strFileOut = fileLoc;
+                            if (!dPreset.Top.StartsWith("#^blank#")) strOutput = dPreset.Top;
+                            else strOutput = String.Empty;
+                        }
                     } else
                     {
-                        closeOut(strFileOut, strOutput);
-                        strFileOut = rArray[1];
-                        if (!dPreset.Top.StartsWith("#^blank#")) strOutput = dPreset.Top;
-                        else strOutput = String.Empty;
+                        rtbStatus.AppendText($"Error with file name or directory doesn't exist, not writing: {fileLoc}\r\n");
                     }
                 } else
                 {
