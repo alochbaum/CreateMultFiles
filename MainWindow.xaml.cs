@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -61,6 +62,7 @@ namespace CreateMultFiles
             {
                 File.Copy(openFileDialog.FileName, GetDbLocation(), true);
                 rtbStatus.AppendText($"Imported Presets from: {openFileDialog.FileName}\r\n");
+                UpdatePresetList();
             }
             else { rtbStatus.AppendText("DB Import Cancelled"); }
         }
@@ -105,6 +107,7 @@ namespace CreateMultFiles
             catch (Exception ex)
             {
                 rtbStatus.AppendText($"Error loading presets {ex.Message}\r\n");
+                rtbStatus.AppendText($"\r\rIf just starting out load sample playlist in the install folder.\r\n");
             }
 
         }
@@ -189,6 +192,15 @@ namespace CreateMultFiles
                 {
                     // the separation character for file array might not be a | just cutting after 8 characters
                     string fileLoc = row.Substring(8);
+                    //string getfilename = System.IO.Path.GetFileName(fileLoc);
+                    //if (getfilename.Length > 4)
+                    //{
+                    //    string fixfilename = getfilename;
+                    //    Regex pattern = new Regex("[;,-()]|[_]{1}");
+                    //    fixfilename = pattern.Replace(fixfilename, "_");
+                    //    fileLoc = fileLoc.Replace(getfilename, fixfilename);
+                    //}
+
                     if (Directory.Exists(System.IO.Path.GetDirectoryName(fileLoc)))
                     {
                         if (!blIsOutputing)
