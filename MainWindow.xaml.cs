@@ -161,7 +161,8 @@ namespace CreateMultFiles
                         line = reader.ReadLine();
                         if ((line != null) && (line.Length > 0))
                         {
-                            if (!line.StartsWith("#^comment")) lRows.Add(line);
+                            // reducing this as a new feature
+                            if (!line.StartsWith("#^c")) lRows.Add(line);
                         }
 
                     } while (line != null);
@@ -188,18 +189,34 @@ namespace CreateMultFiles
             // looping for output files
             foreach (string row in lRows)
             {
-                if (row.StartsWith("#^file#"))
+                // reducing characters 
+                if (row.StartsWith("#^file"))
                 {
-                    // the separation character for file array might not be a | just cutting after 8 characters
-                    string fileLoc = row.Substring(8);
-                    //string getfilename = System.IO.Path.GetFileName(fileLoc);
-                    //if (getfilename.Length > 4)
-                    //{
-                    //    string fixfilename = getfilename;
-                    //    Regex pattern = new Regex("[;,-()]|[_]{1}");
-                    //    fixfilename = pattern.Replace(fixfilename, "_");
-                    //    fileLoc = fileLoc.Replace(getfilename, fixfilename);
-                    //}
+                    string fileLoc="", pubLoc="";
+                    // spliting row with either tab or |, first is tab
+                    if (row.IndexOf('\t') < 9)
+                    {
+                        string[] strSplit = row.Split('\t');
+                        fileLoc = strSplit[1];
+                        if (strSplit.Length > 2) pubLoc = strSplit[2];
+                    }
+                    else if (row.IndexOf('|') < 9)
+                    {
+                        string[] strSplit = row.Split('|');
+                        fileLoc = strSplit[1];
+                        if (strSplit.Length > 2) pubLoc = strSplit[2];
+                    }
+                    else continue;
+
+                    string getfilename = System.IO.Path.GetFileName(fileLoc);
+                    if (getfilename.Length > 4)
+                    {
+                        string fixfilename = getfilename;
+                        // this pattern is a negative of upper case, lowercase, and period
+                        Regex pattern = new Regex("[^A-Za-z0-9.]");
+                        fixfilename = pattern.Replace(fixfilename, "_");
+                        fileLoc = fileLoc.Replace(getfilename, fixfilename);
+                    }
 
                     if (Directory.Exists(System.IO.Path.GetDirectoryName(fileLoc)))
                     {
@@ -220,7 +237,7 @@ namespace CreateMultFiles
                     {
                         rtbStatus.AppendText($"Error with file name or directory doesn't exist, not writing: {fileLoc}\r\n");
                     }
-                } else
+                }else //lRows doesn't starts with #^file
                 {
                     if (row.Length > 0)
                     {
@@ -235,6 +252,9 @@ namespace CreateMultFiles
                             if (s.Length > 0)
                             {
                                 strField = $"#^field{iReplace:D2}#";
+                                strMiddle = strMiddle.Replace(strField, s);
+                                // Added this feature which is replace with #^r01 
+                                strField = $"#^r{iReplace:D2}#";
                                 strMiddle = strMiddle.Replace(strField, s);
                             }
                             iReplace++;
